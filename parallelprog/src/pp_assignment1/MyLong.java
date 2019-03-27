@@ -10,11 +10,12 @@ public class MyLong implements CounterInterface {
 	public long get() {
 		return counter;
 	}
-	public synchronized long incrementAndGet() {		
+	public long incrementAndGet() {		
 		return counter++;
 	}
 	public void check(long ex) {
-		if (counter != ex)
-			System.out.println("Es gab eine Abweichung vom Erwartungswert! Erwartung: "+ex+" Zählerstand: "+counter+" Verlust: "+((ex/counter)*100));
+		if (counter != ex) {
+			System.out.println("Es gab eine Abweichung vom Erwartungswert! Erwartung: "+ex+" Zählerstand: "+counter+" Verlust: "+(long)(100F-((float)counter/(float)ex)*100F)+"%");
+		}
 	}
 }
