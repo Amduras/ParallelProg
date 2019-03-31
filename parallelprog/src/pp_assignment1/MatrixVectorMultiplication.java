@@ -1,9 +1,6 @@
 package pp_assignment1;
-import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.RecursiveAction;
 
 public class MatrixVectorMultiplication extends RecursiveAction{
 
@@ -12,6 +9,7 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 	final int[][] matrix;
 	final int[] vector;
 	int[] result;
+	static int[] checkRes;
 	final int startIndex;
 	final int length;
 	
@@ -19,6 +17,7 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 		this.matrix = matrix;
 		this.vector = vector;
 		this.result = result;
+		this.checkRes = result;
 		this.startIndex = startIndex;
 		this.length = length;
 	}
@@ -35,12 +34,16 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 	public static void main(String[] args) {
 		ForkJoinPool pool = ForkJoinPool.commonPool();
 		int dim = 10;
-		doit(pool,getTestMatrix(dim),getTestVector(dim),getTestResult(dim));		
+		doit(pool,getTestMatrix(dim),getTestVector(dim),getTestResult(dim));
+		
 	}
 	
 	static void doit(ForkJoinPool pool, final int[][] matrix, final int[] vector, final int[] result) {
 		for(int i=0;i<matrix.length;++i)
 			pool.invoke(new MatrixVectorMultiplication(matrix,vector,result,i,matrix[i].length));
+		checkRes = makeSeq(matrix, vector);
+		//result[5] = 10;
+		System.out.println(check(result, checkRes));
 		print(result);
 	}
 	
@@ -76,5 +79,23 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 				System.out.print(matrix[i][j]+"\t");
 			System.out.println();
 		}
+	}
+	
+	public static int[] makeSeq(int[][]mat, int[] vec) {
+		int[] res = new int[vec.length];
+		for(int i = 0; i < res.length; ++i) {
+			for(int j = 0; j < mat[i].length; ++j) {
+				res[i] += mat[i][j]*vec[j];
+			}
+		}
+		return res;
+	}
+	
+	public static String check(int[] res1, int[] res2) {
+		for(int i = 0; i < res1.length; ++i) {
+			if(res1[i] != res2[i])
+				return "Fehler an position i: "+i;
+		}
+		return "Alles richtig";
 	}
 }
