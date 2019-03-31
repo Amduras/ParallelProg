@@ -9,13 +9,13 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 
 	private static final long serialVersionUID = 1L;
 	
-	final double[][] matrix;
-	final double[] vector;
-	double[] result;
+	final int[][] matrix;
+	final int[] vector;
+	int[] result;
 	final int startIndex;
 	final int length;
 	
-	MatrixVectorMultiplication(final double[][] matrix, final double[] vector, final double[] result, final int startIndex, final int length){
+	MatrixVectorMultiplication(final int[][] matrix, final int[] vector, final int[] result, final int startIndex, final int length){
 		this.matrix = matrix;
 		this.vector = vector;
 		this.result = result;
@@ -25,15 +25,11 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 		
 	@Override
 	protected void compute() {
-		if(kleingenug) {
-			for (int i=0; i< length;++i)
-				result[startIndex] +=  matrix[startIndex][i] * vector[i];
+		for (int i=0; i< length;++i) {
+			result[startIndex] +=  matrix[startIndex][i] * vector[i];
+			System.out.println("I: "+startIndex+"Res: "+result[startIndex]+" "+matrix[startIndex][i]+" "+vector[i]);
 		}
-		else {
-			int mid = length/2;
-			MatrixVectorMultiplication upper = new MatrixVectorMultiplication(matrix,vector,result,0,mid);
-			MatrixVectorMultiplication lower = new MatrixVectorMultiplication(matrix,vector,result,mid,length);
-		}
+	
 	}
 	
 	public static void main(String[] args) {
@@ -42,37 +38,39 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 		doit(pool,getTestMatrix(dim),getTestVector(dim),getTestResult(dim));		
 	}
 	
-	static void doit(ForkJoinPool pool, final double[][] matrix, final double[] vector, final double[] result) {
+	static void doit(ForkJoinPool pool, final int[][] matrix, final int[] vector, final int[] result) {
 		for(int i=0;i<matrix.length;++i)
 			pool.invoke(new MatrixVectorMultiplication(matrix,vector,result,i,matrix[i].length));
 		print(result);
 	}
 	
-	static double[] getTestVector(int dim) {
-		double[] vector = new double[dim];
+	static int[] getTestVector(int dim) {
+		int[] vector = new int[dim];
+		for (int i=0;i<vector.length;++i)
+			vector[i] = i;
 		return vector;
 	}
 	
-	static double[] getTestResult(int dim) {
-		double[] result = new double[dim];
+	static int[] getTestResult(int dim) {
+		int[] result = new int[dim];
 		return result;
 	}
 	
-	static double[][] getTestMatrix(int dim){
-		double[][] matrix = new double[dim][dim];
+	static int[][] getTestMatrix(int dim){
+		int[][] matrix = new int[dim][dim];
 		for (int i=0;i<matrix.length;++i)
 			for(int j=0;j<matrix[i].length;++j)
-				matrix[i][j] = Math.random()*Double.MAX_VALUE;
+				matrix[i][j] = 1;//Math.random()*int.MAX_VALUE;
 		return matrix;
 	}
-	static void print(double[] matrix) {
+	static void print(int[] matrix) {
 		for (int i=0;i<matrix.length;++i) {
 			System.out.print(matrix[i]+"\t");
 		}
 		System.out.println();
 	}
 	
-	static void print(double[][] matrix) {
+	static void print(int[][] matrix) {
 		for (int i=0;i<matrix.length;++i) {
 			for(int j=0;j<matrix[i].length;++j)
 				System.out.print(matrix[i][j]+"\t");
