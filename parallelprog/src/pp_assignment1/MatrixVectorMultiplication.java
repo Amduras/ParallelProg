@@ -27,7 +27,7 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 	protected void compute() {
 		for (int i=0; i< length;++i) {
 			result[startIndex] +=  matrix[startIndex][i] * vector[i];
-			System.out.println("I: "+startIndex+"Res: "+result[startIndex]+" "+matrix[startIndex][i]+" "+vector[i]);
+			System.out.println("I: "+startIndex+" Res: "+result[startIndex]+" "+matrix[startIndex][i]+" "+vector[i]);
 		}
 	
 	}
@@ -47,7 +47,7 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 	static int[] getTestVector(int dim) {
 		int[] vector = new int[dim];
 		for (int i=0;i<vector.length;++i)
-			vector[i] = i;
+			vector[i] = (int)(Math.random()*100);
 		return vector;
 	}
 	
@@ -60,7 +60,7 @@ public class MatrixVectorMultiplication extends RecursiveAction{
 		int[][] matrix = new int[dim][dim];
 		for (int i=0;i<matrix.length;++i)
 			for(int j=0;j<matrix[i].length;++j)
-				matrix[i][j] = 1;//Math.random()*int.MAX_VALUE;
+				matrix[i][j] = (int)(Math.random()*100);
 		return matrix;
 	}
 	static void print(int[] matrix) {
