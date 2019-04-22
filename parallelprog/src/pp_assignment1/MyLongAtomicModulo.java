@@ -13,13 +13,13 @@ public class MyLongAtomicModulo implements CounterInterface {
 		return counter.get();
 	}
 	public long incrementAndGet() {
-		 for (;;) {																		//generell benutzbar
-	            long current = counter.get();
-	            long next = (current + 1) % 16;
-	            if (counter.compareAndSet(current, next))
-	                return next;
-	     }
-		 //return counter.getAndUpdate(value -> (value + 1) % 16);						//Ab JAVA 8 benutzbar
+//		 for (;;) {																		//generell benutzbar
+//	            long current = counter.get();
+//	            long next = (current + 1) % 16;
+//	            if (counter.compareAndSet(current, next))
+//	                return next;
+//	     }
+		 return counter.getAndUpdate(value -> (value + 1) % 16);						//Ab JAVA 8 benutzbar
 	}
 	public void check(long ex) {
 		if (counter.get() != (ex%16)) {

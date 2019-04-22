@@ -1,0 +1,24 @@
+/***********************************
+Author:
+Gero 		Balsen			33462
+Jan-Luca 	Pankowsky		33117
+
+Assignment 1 Parallelprog
+***********************************/
+
+Aufgabe b)
+Frage:
+Arbeitet Ihr Programm unter Verwendung der Wrapper-Klasse MyLong im Unterschied zu der
+Version aus der Vorlesung immer korrekt? Warum?
+
+Lösung;
+Nein, da in der MyLong Klasse keine Threadsicherheit besteht.
+Denn der verwendete Datentyp long nicht Threadsicher ist.
+
+Aufgabe c)
+Frage: 
+Arbeitet Ihr Programm immer korrekt? Warum?
+
+Lösung:
+Ja, da in der MyLong Klasse in diesem Fall die Threadsicherheit über den Datentyp
+AtomicLong gewährleistet wird.
