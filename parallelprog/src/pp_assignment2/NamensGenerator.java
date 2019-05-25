@@ -11,6 +11,6 @@ public class NamensGenerator {
 	private static Random gen = new Random();
 	
 	public static String genName() {
-		return vorname[gen.nextInt(vorname.length-1)]+" "+nachname[gen.nextInt(nachname.length-1)];
+		return vorname[gen.nextInt(vorname.length)]+" "+nachname[gen.nextInt(nachname.length)];
 	}
 }
