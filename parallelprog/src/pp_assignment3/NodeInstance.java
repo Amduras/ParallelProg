@@ -2,6 +2,8 @@ package pp_assignment3;
 
 public class NodeInstance extends NodeAbstract implements Node {
 
+	private boolean isAwake = false;
+	
 	public NodeInstance(String name, boolean initiator) {
 		super(name, initiator);
 		// TODO Auto-generated constructor stub
@@ -9,8 +11,9 @@ public class NodeInstance extends NodeAbstract implements Node {
 
 	@Override
 	public void hello(Node neighbour) {
-		// TODO Auto-generated method stub
-		
+		if(!this.neighbours.contains(neighbour)) {
+            this.neighbours.add(neighbour);
+		}		
 	}
 
 	@Override
@@ -27,8 +30,11 @@ public class NodeInstance extends NodeAbstract implements Node {
 
 	@Override
 	public void setupNeighbours(Node... neighbours) {
-		// TODO Auto-generated method stub
-		
+		for(Node i: neighbours) {
+            if(!this.neighbours.contains(i)) {
+                this.neighbours.add(i);                
+            }
+            i.hello(this);
+		}
 	}
-
 }
