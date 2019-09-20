@@ -19,9 +19,24 @@ public class NodeInstance extends NodeAbstract implements Node {
 			this.neighbours.add(neighbour);
 		}		
 	}
-
 	@Override
 	public void wakeup(Node neighbour) {
+<<<<<<< HEAD
+		if(father != null) return;
+		
+		father = neighbour;
+		if(!this.initiator)
+			++messages;
+		System.out.println(toString()+", aufgeweckt von: "+ neighbour.toString() + " messages: "+messages);
+		for(Node i: neighbours) {
+			if(i != father)
+				i.wakeup(this);
+		}		
+		if(messages == neighbours.size()) {
+			System.out.println(toString()+", sende echo an "+ father.toString() + " messages: "+messages);
+			father.echo(this, null);	
+		}			
+=======
 		if(father != null) {
 			return;
 		}
@@ -34,22 +49,27 @@ public class NodeInstance extends NodeAbstract implements Node {
 		if(this.neighbours.size() == messages) {
 			father.echo(this, null);
 		}
-		else {
-			for(Node i: neighbours) {
-				if(i != father) {
-					i.wakeup(this);
-				}
-			}  
-		}	
+		for(Node i: neighbours) {
+			if(i != father) {
+				i.wakeup(this);
+			}
+		}  
+>>>>>>> d563a97f47ce114fd2b6705cd08d6ca84cdf76d8
 	}
-
+	
 	@Override
 	public void echo(Node neighbour, Object data) {
+<<<<<<< HEAD
+		//++messages;
+		
+		
+=======
 		System.out.println("Echo from: "+neighbour.toString()+" to: "+this.toString());
+>>>>>>> d563a97f47ce114fd2b6705cd08d6ca84cdf76d8
 		++messages;
 		children.add((NodeInstance) neighbour);
 		System.out.println(this.toString()+": added "+neighbour.toString());
-		if(this.initiator && messages == this.neighbours.size()) {
+		if(initiator && messages == neighbours.size()) {
 			System.out.println("~fin~");
 			System.out.println(this.toString());
 			for(NodeInstance child : children) {
@@ -72,8 +92,9 @@ public class NodeInstance extends NodeAbstract implements Node {
 	}
 
 	public void print() {
-		System.out.print(toString()+" ");
-		if(!children.isEmpty())
+		if(children.isEmpty())
+			System.out.print(toString());
+		else
 			for(NodeInstance child : children) {
 				System.out.print(child.toString()+" ");
 				child.print();
