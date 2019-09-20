@@ -3,10 +3,11 @@ package pp_assignment3;
 public class NodeInstance extends NodeAbstract implements Node {
 
 	private boolean isAwake = false;
+	private int messages = 0;
+	private Node father;
 	
 	public NodeInstance(String name, boolean initiator) {
 		super(name, initiator);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -18,7 +19,7 @@ public class NodeInstance extends NodeAbstract implements Node {
 
 	@Override
 	public void wakeup(Node neighbour) {
-		// TODO Auto-generated method stub
+		father = neighbour;
 		
 	}
 
