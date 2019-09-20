@@ -1,10 +1,13 @@
 package pp_assignment3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NodeInstance extends NodeAbstract implements Node {
 
-	private boolean isAwake = false;
 	private int messages = 0;
 	private Node father = null;
+	private List<NodeInstance> children = new ArrayList<NodeInstance>();
 
 	public NodeInstance(String name, boolean initiator) {
 		super(name, initiator);
@@ -23,7 +26,7 @@ public class NodeInstance extends NodeAbstract implements Node {
 			father = neighbour;
 			++messages;
 		}
-		if(this.neighbours.size() == 1) {
+		if(this.neighbours.size() == 1 || messages == this.neighbours.size()) {
 			father.echo(this, null);
 		} else {
 			for(Node i: neighbours) {
@@ -34,8 +37,19 @@ public class NodeInstance extends NodeAbstract implements Node {
 
 	@Override
 	public void echo(Node neighbour, Object data) {
-		// TODO Auto-generated method stub
-
+		++messages;
+		children.add((NodeInstance) neighbour);
+		System.out.println(this.toString()+": added "+neighbour.toString());
+		if(this.initiator && messages == this.neighbours.size()) {
+			System.out.println("~fin~");
+			System.out.println(this.toString());
+			for(NodeInstance child : children) {
+				//child.print();
+				//System.out.println();
+			}
+		}	
+		else if(messages == this.neighbours.size())
+			father.echo(this, data);
 	}
 
 	@Override
@@ -46,5 +60,15 @@ public class NodeInstance extends NodeAbstract implements Node {
 			}
 			i.hello(this);
 		}
+	}
+	
+	public void print() {
+		if(children.isEmpty())
+			System.out.print(toString());
+		else
+			for(NodeInstance child : children) {
+				System.out.print(child.toString()+" ");
+				child.print();
+			}
 	}
 }

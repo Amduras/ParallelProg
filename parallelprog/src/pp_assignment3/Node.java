@@ -37,5 +37,4 @@ public interface Node {
 	 * @param data
 	 */
 	public void echo(Node neighbour, Object data);
-
 }
