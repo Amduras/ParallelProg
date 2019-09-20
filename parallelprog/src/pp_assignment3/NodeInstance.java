@@ -19,28 +19,33 @@ public class NodeInstance extends NodeAbstract implements Node {
 			this.neighbours.add(neighbour);
 		}		
 	}
-
 	@Override
 	public void wakeup(Node neighbour) {
-		if(father == null) {
-			father = neighbour;
+		if(father != null) return;
+		
+		father = neighbour;
+		if(!this.initiator)
 			++messages;
-		}
-		if(this.neighbours.size() == 1 || messages == this.neighbours.size()) {
-			father.echo(this, null);
-		} else {
-			for(Node i: neighbours) {
+		System.out.println(toString()+", aufgeweckt von: "+ neighbour.toString() + " messages: "+messages);
+		for(Node i: neighbours) {
+			if(i != father)
 				i.wakeup(this);
-			}
-		}
+		}		
+		if(messages == neighbours.size()) {
+			System.out.println(toString()+", sende echo an "+ father.toString() + " messages: "+messages);
+			father.echo(this, null);	
+		}			
 	}
-
+	
 	@Override
 	public void echo(Node neighbour, Object data) {
+		//++messages;
+		
+		
 		++messages;
 		children.add((NodeInstance) neighbour);
 		System.out.println(this.toString()+": added "+neighbour.toString());
-		if(this.initiator && messages == this.neighbours.size()) {
+		if(initiator && messages == neighbours.size()) {
 			System.out.println("~fin~");
 			System.out.println(this.toString());
 			for(NodeInstance child : children) {
