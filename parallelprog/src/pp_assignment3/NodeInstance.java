@@ -52,7 +52,7 @@ public class NodeInstance extends NodeAbstract implements Node {
 			System.out.println(this.toString());
 			for(NodeInstance child : children) {
 				child.print();
-				System.out.println();
+//				System.out.println();
 			}
 		}	
 		else if(messages == this.neighbours.size())

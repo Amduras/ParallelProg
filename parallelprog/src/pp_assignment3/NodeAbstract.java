@@ -18,7 +18,7 @@ public abstract class NodeAbstract extends Thread implements Node {
 	 * Collection of known neighbours of this node; only the methods of the
 	 * neighbours in this collection can be called.
 	 */
-	public final Set<Node> neighbours = new HashSet<Node>();
+	protected final Set<Node> neighbours = new HashSet<Node>();
 
 	/** Abstract constructor of a node */
 	public NodeAbstract(String name, boolean initiator) {

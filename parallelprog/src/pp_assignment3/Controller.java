@@ -5,10 +5,6 @@ public class Controller {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		NodeInstance[] nodes = createTestTree();
-
-		for(NodeInstance node: nodes) {
-            System.out.println(node.neighbours.size());
-        }
 		nodes[0].wakeup(nodes[0]);
 		for(NodeInstance node: nodes) {
 			System.out.print(node.neighbours.size());
