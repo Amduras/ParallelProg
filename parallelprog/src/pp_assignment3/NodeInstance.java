@@ -23,6 +23,11 @@ public class NodeInstance extends NodeAbstract implements Node {
 	@Override
 	public void wakeup(Node neighbour) {
 		if(father != null) {
+			System.out.println(toString()+" "+messages);
+			++messages;
+			if(this.neighbours.size() == messages) {
+				father.echo(this, null);
+			}
 			return;
 		}
 
@@ -36,6 +41,7 @@ public class NodeInstance extends NodeAbstract implements Node {
 		} else {
 			for(Node i: neighbours) {
 				if(i != father) {
+					System.out.println(toString()+", exploring: "+i.toString());
 					i.wakeup(this);
 				}
 			}  
@@ -52,6 +58,7 @@ public class NodeInstance extends NodeAbstract implements Node {
 			System.out.println("~fin~");
 			System.out.println(this.toString());
 			for(NodeInstance child : children) {
+				System.out.print(child.toString()+" ");
 				child.print();
 				System.out.println();
 			}
@@ -71,13 +78,11 @@ public class NodeInstance extends NodeAbstract implements Node {
 	}
 
 	public void print() {
-		if(!children.isEmpty()) {
-			System.out.print(toString()+" ");
+		if(!children.isEmpty()) {			
 			for(NodeInstance child : children) {
 				System.out.print(child.toString()+" ");
 				child.print();
 			}
 		}
-
 	}
 }
