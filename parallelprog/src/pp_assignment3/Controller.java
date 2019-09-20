@@ -10,6 +10,9 @@ public class Controller {
             System.out.println(node.neighbours.size());
         }
 		nodes[0].wakeup(nodes[0]);
+		for(NodeInstance node: nodes) {
+			System.out.print(node.neighbours.size());
+		}
 	}
 	
 	private static NodeInstance[] createTestTree() {

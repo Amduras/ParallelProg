@@ -19,38 +19,40 @@ public class NodeInstance extends NodeAbstract implements Node {
 			this.neighbours.add(neighbour);
 		}		
 	}
+
 	@Override
 	public void wakeup(Node neighbour) {
-		if(father != null) return;
+		if(father != null) {
+			return;
+		}
 		
 		father = neighbour;
-		if(!this.initiator)
+		if(!this.initiator) {
 			++messages;
-		System.out.println(toString()+", aufgeweckt von: "+ neighbour.toString() + " messages: "+messages);
+		}
+
+		if(this.neighbours.size() == messages) {
+			father.echo(this, null);
+		}
 		for(Node i: neighbours) {
-			if(i != father)
+			if(i != father) {
 				i.wakeup(this);
-		}		
-		if(messages == neighbours.size()) {
-			System.out.println(toString()+", sende echo an "+ father.toString() + " messages: "+messages);
-			father.echo(this, null);	
-		}			
+			}
+		}  
 	}
-	
+
 	@Override
 	public void echo(Node neighbour, Object data) {
-		//++messages;
-		
-		
+		System.out.println("Echo from: "+neighbour.toString()+" to: "+this.toString());
 		++messages;
 		children.add((NodeInstance) neighbour);
 		System.out.println(this.toString()+": added "+neighbour.toString());
-		if(initiator && messages == neighbours.size()) {
+		if(this.initiator && messages == this.neighbours.size()) {
 			System.out.println("~fin~");
 			System.out.println(this.toString());
 			for(NodeInstance child : children) {
-				//child.print();
-				//System.out.println();
+				child.print();
+				System.out.println();
 			}
 		}	
 		else if(messages == this.neighbours.size())
@@ -66,7 +68,7 @@ public class NodeInstance extends NodeAbstract implements Node {
 			i.hello(this);
 		}
 	}
-	
+
 	public void print() {
 		if(children.isEmpty())
 			System.out.print(toString());
