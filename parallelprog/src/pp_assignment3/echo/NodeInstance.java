@@ -5,31 +5,31 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class NodeInstance extends NodeAbstract implements Node {
-	
-	static AtomicLong check = new AtomicLong(); 
-	private int messages = 0;
-	private Node father = null;
-	List<NodeInstance> children = new CopyOnWriteArrayList<NodeInstance>();
-	
-	public NodeInstance(String name, boolean initiator) {
-		super(name, initiator);
-	}
+    
+    static AtomicLong check = new AtomicLong(); 
+    private int messages = 0;
+    private Node father = null;
+    List<NodeInstance> children = new CopyOnWriteArrayList<NodeInstance>();
+    
+    public NodeInstance(String name, boolean initiator) {
+        super(name, initiator);
+    }
 
-	@Override
-	public void hello(Node neighbour) {
-		if(!this.neighbours.contains(neighbour)) {
-			this.neighbours.add(neighbour);
-		}		
-	}
-	
-	
-	@Override
+    @Override
+    public void hello(Node neighbour) {
+        if(!this.neighbours.contains(neighbour)) {
+            this.neighbours.add(neighbour);
+        }        
+    }
+    
+    
+    @Override
     public void wakeup(Node neighbour) {
-		int tmp = messages;
-		if(!this.initiator) {
-			++tmp;
-			++messages;
-		}
+        int tmp = messages;
+        if(!this.initiator) {
+            ++tmp;
+            ++messages;
+        }
         if(father == null) {            
             father = neighbour;
 //            System.out.println(this.toString()+" added "+neighbour.toString()+" as father");
@@ -43,50 +43,50 @@ public class NodeInstance extends NodeAbstract implements Node {
             }
         }                
         if(tmp == this.neighbours.size())
-        	new Thread(()->father.echo(this, null)).start();
+            new Thread(()->father.echo(this, null)).start();
     }
-	
-	@Override
-	public void echo(Node neighbour, Object data) {
-		int tmp = ++messages;
-		check.getAndIncrement();
-//		System.out.println("Echo from: "+neighbour.toString()+" to: "+this.toString());
-		//++messages;
-		children.add((NodeInstance) neighbour);
-//		System.out.println(this.toString()+": added "+neighbour.toString());
-		if(this.initiator && tmp == this.neighbours.size()) {	
-			System.out.println("~fin~");
-//			Controller.printChildren();
-//			Controller.fin = false;
-//			System.out.println(this.toString());
-//			for(NodeInstance child : children) {
-//				System.out.print(child.toString()+" ");
-//				child.print();
-//				System.out.println();
-//			}
-			System.out.println("Echos: "+check.get());
-			check.set(0);
-		}	
-		else if(tmp == this.neighbours.size())
-			new Thread(()->father.echo(this, null)).start();
-	}
+    
+    @Override
+    public void echo(Node neighbour, Object data) {
+        int tmp = ++messages;
+        check.getAndIncrement();
+//        System.out.println("Echo from: "+neighbour.toString()+" to: "+this.toString());
+        //++messages;
+        children.add((NodeInstance) neighbour);
+//        System.out.println(this.toString()+": added "+neighbour.toString());
+        if(this.initiator && tmp == this.neighbours.size()) {    
+            System.out.println("~fin~");
+//            Controller.printChildren();
+//            Controller.fin = false;
+//            System.out.println(this.toString());
+//            for(NodeInstance child : children) {
+//                System.out.print(child.toString()+" ");
+//                child.print();
+//                System.out.println();
+//            }
+            System.out.println("Echos: "+check.get());
+            check.set(0);
+        }    
+        else if(tmp == this.neighbours.size())
+            new Thread(()->father.echo(this, null)).start();
+    }
 
-	@Override
-	public void setupNeighbours(Node... neighbours) {
-		for(Node i: neighbours) {
-			if(!this.neighbours.contains(i)) {
-				this.neighbours.add(i);                
-			}
-			i.hello(this);
-		}
-	}
+    @Override
+    public void setupNeighbours(Node... neighbours) {
+        for(Node i: neighbours) {
+            if(!this.neighbours.contains(i)) {
+                this.neighbours.add(i);                
+            }
+            i.hello(this);
+        }
+    }
 
-	public void print() {
-		if(!children.isEmpty()) {			
-			for(NodeInstance child : children) {
-				System.out.print(child.toString()+" ");
-				child.print();
-			}
-		}
-	}
+    public void print() {
+        if(!children.isEmpty()) {            
+            for(NodeInstance child : children) {
+                System.out.print(child.toString()+" ");
+                child.print();
+            }
+        }
+    }
 }

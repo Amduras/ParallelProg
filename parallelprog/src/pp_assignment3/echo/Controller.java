@@ -9,9 +9,9 @@ public class Controller {
 	
 	public static void main(String[] args) {
 		for(int i = 0; i < 100; ++i) {
-			System.out.print("Durchgang: "+i+" ");
+			System.out.print("Durchgang: "+(i+1)+" ");
 			int initiator = ORANGE;
-			nodes = createTestTree();
+			nodes = createCompleteTree();
 			new Thread(()->nodes[initiator].wakeup(nodes[initiator])).start();
 			nodes[initiator].wakeup(nodes[initiator]);
 			try {
@@ -43,6 +43,24 @@ public class Controller {
 		nodes[BLACK].setupNeighbours(nodes[ORANGE],nodes[YELLOW]);
 		nodes[WHITE].setupNeighbours(nodes[YELLOW],nodes[WHITE]);
 		nodes[BROWN].setupNeighbours(nodes[ORANGE],nodes[GREEN]);
+		
+		return nodes;
+	}
+	
+	private static NodeInstance[] createCompleteTree() {
+		NodeInstance[] nodes = new NodeInstance[5];
+		nodes[BLUE] = new NodeInstance("blue", false);
+		nodes[MAGENTA] = new NodeInstance("magenta", false);
+		nodes[GREEN] = new NodeInstance("green", false);
+		nodes[RED] = new NodeInstance("red", false);
+		nodes[ORANGE] = new NodeInstance("orange", true);
+
+		
+		nodes[BLUE].setupNeighbours(nodes[MAGENTA],nodes[GREEN],nodes[RED],nodes[ORANGE]);
+		nodes[MAGENTA].setupNeighbours(nodes[BLUE],nodes[GREEN],nodes[RED],nodes[ORANGE]);
+		nodes[GREEN].setupNeighbours(nodes[BLUE],nodes[MAGENTA],nodes[RED],nodes[ORANGE]);
+		nodes[RED].setupNeighbours(nodes[BLUE],nodes[MAGENTA],nodes[GREEN],nodes[ORANGE]);
+		nodes[ORANGE].setupNeighbours(nodes[BLUE],nodes[MAGENTA],nodes[GREEN],nodes[RED]);
 		
 		return nodes;
 	}

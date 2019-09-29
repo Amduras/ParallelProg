@@ -9,11 +9,13 @@ public class Controller {
 	static int Min = 1, Max = 20;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int initiator = ORANGE;
+		//int initiator = ORANGE;
 		int length = 9;
 		Integer[] id = createId(length);
 		NodeInstance[] nodes = createTestTree(length, id);
-//		new Thread(()->nodes[initiator].wakeup(nodes[initiator])).start();
+		System.out.println("Red: "+id[RED]+" Brown: "+id[BROWN]);
+		new Thread(()->nodes[RED].wakeup(nodes[RED],id[RED])).start();
+		new Thread(()->nodes[BROWN].wakeup(nodes[BROWN],id[BROWN])).start();
 		//for(NodeInstance node: nodes)
 		//	System.out.println(node.children.toString());
 		for(int i: id)
@@ -36,12 +38,12 @@ public class Controller {
 		nodes[BLUE] = new NodeInstance("blue", false, id[0]);
 		nodes[MAGENTA] = new NodeInstance("magenta", false, id[1]);
 		nodes[GREEN] = new NodeInstance("green", false, id[2]);
-		nodes[RED] = new NodeInstance("red", false, id[3]);
+		nodes[RED] = new NodeInstance("red", true, id[3]);
 		nodes[ORANGE] = new NodeInstance("orange", false, id[4]);
 		nodes[YELLOW] = new NodeInstance("yellow", false, id[5]);
 		nodes[BLACK] = new NodeInstance("black", false, id[6]);
 		nodes[WHITE] = new NodeInstance("white", false, id[7]);
-		nodes[BROWN] = new NodeInstance("brown", false, id[8]);
+		nodes[BROWN] = new NodeInstance("brown", true, id[8]);
 		
 		nodes[BLUE].setupNeighbours(nodes[MAGENTA],nodes[RED]);
 		nodes[MAGENTA].setupNeighbours(nodes[BLUE],nodes[GREEN]);
