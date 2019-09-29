@@ -4,14 +4,22 @@ public class Controller {
 	static int BLUE = 0, MAGENTA = 1, GREEN = 2, RED = 3,
 			ORANGE = 4, YELLOW = 5, BLACK = 6, WHITE = 7,
 			BROWN = 8;
+	static NodeInstance[] nodes;
+	static boolean fin = true;
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int initiator = ORANGE;
-		NodeInstance[] nodes = createTestTree();
-		new Thread(()->nodes[initiator].wakeup(nodes[initiator])).start();
-		//for(NodeInstance node: nodes)
-		//	System.out.println(node.children.toString());
+		for(int i = 0; i < 100; ++i) {
+			System.out.print("Durchgang: "+i+" ");
+			int initiator = ORANGE;
+			nodes = createTestTree();
+			new Thread(()->nodes[initiator].wakeup(nodes[initiator])).start();
+			nodes[initiator].wakeup(nodes[initiator]);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private static NodeInstance[] createTestTree() {
@@ -37,5 +45,17 @@ public class Controller {
 		nodes[BROWN].setupNeighbours(nodes[ORANGE],nodes[GREEN]);
 		
 		return nodes;
+	}
+	
+	static void printChildren() {
+		if(fin) {
+			for(NodeInstance i: nodes) {
+				System.out.print("Children from "+i.toString()+": ");
+				for(NodeInstance x: i.children) {
+					System.out.print(x.toString()+" ");
+				}
+				System.out.println();
+			}
+		}
 	}
 }
