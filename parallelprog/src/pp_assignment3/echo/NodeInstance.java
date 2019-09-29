@@ -56,7 +56,7 @@ public class NodeInstance extends NodeAbstract implements Node {
 //        System.out.println(this.toString()+": added "+neighbour.toString());
         if(this.initiator && tmp == this.neighbours.size()) {    
             System.out.println("~fin~");
-//            Controller.printChildren();
+            //Controller.printChildren();
 //            Controller.fin = false;
 //            System.out.println(this.toString());
 //            for(NodeInstance child : children) {

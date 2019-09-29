@@ -9,16 +9,16 @@ public class NodeInstance extends NodeAbstract implements Node {
     static AtomicLong check = new AtomicLong(); 
     private int messages = 0;
     private Node father = null;
-    List<NodeInstance> children = new CopyOnWriteArrayList<NodeInstance>();
+    public List<NodeInstance> children = new CopyOnWriteArrayList<NodeInstance>();
     private int maxId = 0;
     
     public NodeInstance(String name, boolean initiator, int id) {
-        super(name, initiator,id);
+        super(name, initiator, id);
     }
 
     @Override
     public void hello(Node neighbour) {
-        if(!this.neighbours.contains(neighbour)) {
+        if(!this.neighbours.contains(neighbour)  && neighbour != this) {
             this.neighbours.add(neighbour);
         }        
     }
@@ -34,13 +34,15 @@ public class NodeInstance extends NodeAbstract implements Node {
         if(father == null || id > maxId) {            
             if(id > maxId) {
             	messages = 1;
+            	if(initiator)
+            		System.out.println(toString()+" auf false mit id: "+id);
             	initiator = false;
             }
                 
             
             father = neighbour;
             maxId = id;
-            System.out.println(this.toString()+" added "+neighbour.toString()+" as father");
+            //System.out.println(this.toString()+" added "+neighbour.toString()+" as father");
             if(!(tmp == this.neighbours.size())) {
                 for(Node i: neighbours) {
                     if(i != father) {
@@ -59,14 +61,14 @@ public class NodeInstance extends NodeAbstract implements Node {
     	if((int)data < maxId ) return;
         int tmp = ++messages;
         check.getAndIncrement();
-        System.out.println("Echo from: "+neighbour.toString()+" to: "+this.toString());
+        System.out.println("Echo from: "+neighbour.toString()+" to: "+this.toString()+" "+tmp+" ini: "+initiator+ " size: "+neighbours.size());
         //++messages;
         children.add((NodeInstance) neighbour);
-//        System.out.println(this.toString()+": added "+neighbour.toString());
+        //System.out.println(this.toString()+": added "+neighbour.toString());
         if(this.initiator && tmp == this.neighbours.size()) {    
             System.out.println("~fin~");
-//            Controller.printChildren();
-//            Controller.fin = false;
+            Controller.printChildren();
+            Controller.fin = false;
 //            System.out.println(this.toString());
 //            for(NodeInstance child : children) {
 //                System.out.print(child.toString()+" ");
@@ -83,11 +85,16 @@ public class NodeInstance extends NodeAbstract implements Node {
     @Override
     public void setupNeighbours(Node... neighbours) {
         for(Node i: neighbours) {
-            if(!this.neighbours.contains(i)) {
+            if(!this.neighbours.contains(i) && i != this) {
                 this.neighbours.add(i);                
             }
             i.hello(this);
         }
+    }
+    
+    public void setInitiator(int id) {
+    	initiator = true;
+    	maxId = id;
     }
 
     public void print() {
