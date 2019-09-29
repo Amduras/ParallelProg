@@ -1,4 +1,4 @@
-package pp_assignment3;
+package pp_assignment3.echo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +41,9 @@ public class NodeInstance extends NodeAbstract implements Node {
 		} else {
 			for(Node i: neighbours) {
 				if(i != father) {
-					System.out.println(toString()+", exploring: "+i.toString());
-					i.wakeup(this);
+					System.out.println(toString()+", exploring: "+i.toString()+" currentThread: "+Thread.currentThread().getId());
+//					i.wakeup(this);
+					new Thread(()->i.wakeup(this)).start();
 				}
 			}  
 		}

@@ -1,0 +1,41 @@
+package pp_assignment3.echo;
+
+public class Controller {
+	static int BLUE = 0, MAGENTA = 1, GREEN = 2, RED = 3,
+			ORANGE = 4, YELLOW = 5, BLACK = 6, WHITE = 7,
+			BROWN = 8;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int initiator = ORANGE;
+		NodeInstance[] nodes = createTestTree();
+		new Thread(()->nodes[initiator].wakeup(nodes[initiator])).start();
+		//for(NodeInstance node: nodes)
+		//	System.out.println(node.children.toString());
+	}
+	
+	private static NodeInstance[] createTestTree() {
+		NodeInstance[] nodes = new NodeInstance[9];
+		nodes[BLUE] = new NodeInstance("blue", false);
+		nodes[MAGENTA] = new NodeInstance("magenta", false);
+		nodes[GREEN] = new NodeInstance("green", false);
+		nodes[RED] = new NodeInstance("red", false);
+		nodes[ORANGE] = new NodeInstance("orange", true);
+		nodes[YELLOW] = new NodeInstance("yellow", false);
+		nodes[BLACK] = new NodeInstance("black", false);
+		nodes[WHITE] = new NodeInstance("white", false);
+		nodes[BROWN] = new NodeInstance("brown", false);
+		
+		nodes[BLUE].setupNeighbours(nodes[MAGENTA],nodes[RED]);
+		nodes[MAGENTA].setupNeighbours(nodes[BLUE],nodes[GREEN]);
+		nodes[GREEN].setupNeighbours(nodes[MAGENTA],nodes[BROWN]);
+		nodes[RED].setupNeighbours(nodes[BLUE],nodes[YELLOW],nodes[ORANGE],nodes[RED]);
+		nodes[ORANGE].setupNeighbours(nodes[RED],nodes[BLACK],nodes[BROWN]);
+		nodes[YELLOW].setupNeighbours(nodes[RED],nodes[BLACK],nodes[WHITE]);
+		nodes[BLACK].setupNeighbours(nodes[ORANGE],nodes[YELLOW]);
+		nodes[WHITE].setupNeighbours(nodes[YELLOW],nodes[WHITE]);
+		nodes[BROWN].setupNeighbours(nodes[ORANGE],nodes[GREEN]);
+		
+		return nodes;
+	}
+}
