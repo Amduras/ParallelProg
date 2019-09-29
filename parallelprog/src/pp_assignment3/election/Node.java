@@ -1,4 +1,4 @@
-package pp_assignment3;
+package pp_assignment3.election;
 
 /**
  * This interface defines the methods of each node participating in the echo
@@ -25,7 +25,7 @@ public interface Node {
 	 * 
 	 * @param neighbour
 	 */
-	public void wakeup(Node neighbour);
+	public void wakeup(Node neighbour, int id);
 
 	/**
 	 * Incoming "echo" message from a neighbour. The neighbour can also send some
