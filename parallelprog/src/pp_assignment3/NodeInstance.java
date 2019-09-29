@@ -85,4 +85,10 @@ public class NodeInstance extends NodeAbstract implements Node {
 			}
 		}
 	}
+	
+	@Override
+	public void run() {
+		if(initiator)
+			wakeup(this);
+	}
 }
