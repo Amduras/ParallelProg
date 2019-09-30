@@ -7,7 +7,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class NodeInstance extends NodeAbstract implements Node {
     
     private int messages = 0;
+    private int messagesEcho = 0;
     private Node father = null;
+    private Node fatherEcho = null;
     List<NodeInstance> children = new CopyOnWriteArrayList<NodeInstance>();
     public int maxId = 0;
     
@@ -68,14 +70,14 @@ public class NodeInstance extends NodeAbstract implements Node {
     
     @Override
     public synchronized void wakeupEcho(Node neighbour) {
-        int tmp = messages;
-        maxId = 0;
+        int tmp = messagesEcho;        
         if(!this.initiator) {
             ++tmp;
-            ++messages;
+            ++messagesEcho;
         }
-        if(father == null) {            
-            father = neighbour;
+        if(fatherEcho == null) {            
+            fatherEcho = neighbour;
+            maxId = 0;
             if(!(tmp == neighbours.size())) {
                 for(Node i: neighbours) {
                     if(i != father) {
@@ -89,12 +91,10 @@ public class NodeInstance extends NodeAbstract implements Node {
     }
     @Override
 	public synchronized void echoEcho(Node neighbour, Object data) {
-    	 int tmp = ++messages;
+    	 int tmp = ++messagesEcho;
          children.add((NodeInstance) neighbour);
-         System.out.println("hi");
          if(this.initiator && tmp == neighbours.size()) {
         	 initiator = false;
-        	 maxId = 0;
              System.out.println("\n"+toString());
              for(NodeInstance child : children) {
                  System.out.print(child.toString()+" ");
@@ -130,5 +130,15 @@ public class NodeInstance extends NodeAbstract implements Node {
                 child.print();
             }
         }
+        clear();
+    }
+    
+    private void clear() {
+    	messages = 0;
+        messagesEcho = 0;
+        father = null;
+        fatherEcho = null;
+        children.clear();
+        maxId = 0;
     }
 }
