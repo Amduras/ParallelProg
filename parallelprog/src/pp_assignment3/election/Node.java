@@ -26,7 +26,7 @@ public interface Node {
 	 * @param neighbour
 	 */
 	public void wakeup(Node neighbour, int id);
-
+	public void wakeupEcho(Node neighbour);
 	/**
 	 * Incoming "echo" message from a neighbour. The neighbour can also send some
 	 * data with this echo message. The data object might e.g. contain information
@@ -37,4 +37,5 @@ public interface Node {
 	 * @param data
 	 */
 	public void echo(Node neighbour, Object data);
+	public void echoEcho(Node neighbour, Object data);
 }
