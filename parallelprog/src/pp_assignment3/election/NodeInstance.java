@@ -77,7 +77,6 @@ public class NodeInstance extends NodeAbstract implements Node {
         }
         if(fatherEcho == null) {            
             fatherEcho = neighbour;
-            maxId = 0;
             if(!(tmp == neighbours.size())) {
                 for(Node i: neighbours) {
                     if(i != father) {
